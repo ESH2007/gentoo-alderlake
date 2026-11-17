@@ -1,0 +1,23 @@
+# USE por paquete. Mantener esto corto: cada cambio frente al binhost
+# obliga a compilar el paquete localmente.
+
+# Arranque: systemd-boot + installkernel sin initramfs
+sys-apps/systemd boot kernel-install
+sys-kernel/installkernel systemd systemd-boot -dracut -grub
+
+# Firmware: solo lo que usa este equipo (ver docs/KERNEL.md, savedconfig)
+sys-kernel/linux-firmware savedconfig compress-zstd
+
+# Red ligera: iwd hace DHCP por sí mismo
+net-wireless/iwd client monitor
+
+# Audio y vídeo
+media-video/pipewire sound-server extra
+media-libs/mesa vaapi vulkan
+media-video/ffmpeg vaapi vulkan
+
+# Portal de capturas/compartir pantalla para Hyprland
+sys-apps/xdg-desktop-portal screencast
+
+# Microcódigo: va dentro del kernel (EXTRA_FIRMWARE), sin initramfs
+sys-firmware/intel-microcode -initramfs hostonly

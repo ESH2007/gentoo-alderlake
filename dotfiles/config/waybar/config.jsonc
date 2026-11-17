@@ -1,0 +1,66 @@
+// ~/.config/waybar/config.jsonc — barra superior fina
+{
+  "layer": "top",
+  "position": "top",
+  "height": 28,
+  "spacing": 6,
+  "modules-left": ["custom/esh", "hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["tray", "cpu", "memory", "backlight", "pulseaudio", "network", "battery", "custom/power"],
+
+  "custom/esh": {
+    "format": "\uf5fd",
+    "tooltip-format": "Menú ESH (SUPER+ALT+Espacio)",
+    "on-click": "esh-menu"
+  },
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "on-scroll-up": "hyprctl dispatch workspace e-1",
+    "on-scroll-down": "hyprctl dispatch workspace e+1",
+    "persistent-workspaces": { "*": 5 }
+  },
+  "hyprland/window": { "max-length": 50, "separate-outputs": true },
+  "clock": {
+    "format": "{:%a %d %b  %H:%M}",
+    "locale": "es_ES.UTF-8",
+    "tooltip-format": "<tt>{calendar}</tt>"
+  },
+  "tray": { "spacing": 8, "icon-size": 14 },
+  "cpu": { "interval": 5, "format": "\uf2db {usage}%", "on-click": "alacritty -e btop" },
+  "memory": { "interval": 10, "format": "\uf538 {percentage}%", "tooltip-format": "RAM {used:0.1f}/{total:0.1f} GiB · swap zram {swapUsed:0.1f} GiB" },
+  "backlight": {
+    "format": "{icon} {percent}%",
+    "format-icons": ["\uf185", "\uf185"],
+    "on-scroll-up": "brightnessctl -e4 -n2 set 5%+",
+    "on-scroll-down": "brightnessctl -e4 -n2 set 5%-"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "\uf6a9 --",
+    "format-icons": { "default": ["\uf026", "\uf027", "\uf028"] },
+    "on-click": "alacritty -e pulsemixer",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+  },
+  "network": {
+    "format-wifi": "\uf1eb {signalStrength}%",
+    "format-ethernet": "\uf6ff",
+    "format-disconnected": "\uf127 --",
+    "tooltip-format-wifi": "{essid} · {ipaddr}",
+    "on-click": "alacritty -e iwctl"
+  },
+  "battery": {
+    "interval": 30,
+    "states": { "warning": 25, "critical": 10 },
+    "format": "{icon} {capacity}%",
+    "format-charging": "\uf0e7 {capacity}%",
+    "format-plugged": "\uf1e6 {capacity}%",
+    "format-icons": ["\uf244", "\uf243", "\uf242", "\uf241", "\uf240"],
+    "tooltip-format": "{timeTo} · {power:.1f} W",
+    "on-click": "esh-menu energia"
+  },
+  "custom/power": {
+    "format": "\uf011",
+    "tooltip-format": "Apagar, reiniciar, suspender…",
+    "on-click": "esh-menu sistema"
+  }
+}

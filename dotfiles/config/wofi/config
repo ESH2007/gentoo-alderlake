@@ -1,0 +1,13 @@
+# ~/.config/wofi/config  (los colores van en style.css, generado por esh-theme)
+width=560
+height=380
+location=center
+show=drun
+prompt=Buscar…
+allow_images=true
+image_size=22
+insensitive=true
+no_actions=true
+gtk_dark=true
+term=alacritty
+key_expand=Tab

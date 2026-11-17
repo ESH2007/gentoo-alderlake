@@ -1,0 +1,19 @@
+# ~/.config/alacritty/alacritty.toml (Alacritty ≥ 0.14)
+[general]
+import = ["~/.config/esh/current/alacritty.toml"]
+live_config_reload = true
+
+[window]
+padding = { x = 10, y = 8 }
+decorations = "None"
+dynamic_title = true
+
+[font]
+normal = { family = "JetBrains Mono", style = "Regular" }
+size = 11.0
+
+[scrolling]
+history = 10000
+
+[cursor]
+style = { shape = "Beam", blinking = "Off" }

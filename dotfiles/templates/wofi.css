@@ -1,0 +1,30 @@
+/* Generado por esh-theme ({{NAME}}) → ~/.config/wofi/style.css */
+* {
+    font-family: "JetBrains Mono", "Font Awesome 6 Free", sans-serif;
+    font-size: 14px;
+}
+window {
+    background-color: {{BG}};
+    border: 2px solid {{ACCENT}};
+    border-radius: 12px;
+}
+#outer-box { padding: 14px; }
+#input {
+    background-color: {{BG_ALT}};
+    color: {{FG}};
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+}
+#input:focus { box-shadow: 0 0 0 2px {{ACCENT}}; }
+#entry {
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+#entry:selected {
+    background-color: {{SURFACE}};
+    outline: none;
+}
+#text { color: {{FG}}; }
+#entry:selected #text { color: {{ACCENT}}; }

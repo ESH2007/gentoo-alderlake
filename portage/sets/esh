@@ -1,0 +1,3 @@
+# Conjunto @esh: el escritorio completo. Instalar con:  emerge -av @esh
+app-misc/esh-desktop
+x11-themes/esh-tools

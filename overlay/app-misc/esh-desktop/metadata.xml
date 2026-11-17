@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<name>Emilio</name>
+	</maintainer>
+	<use>
+		<flag name="browser">Instala Firefox precompilado (www-client/firefox-bin)</flag>
+		<flag name="fonts">Instala las fuentes que usan los temas</flag>
+	</use>
+</pkgmetadata>

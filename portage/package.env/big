@@ -1,0 +1,10 @@
+# Paquetes que no caben en el tmpfs de 5 GB o que usan mucha RAM.
+# Normalmente vienen del binhost; esto solo aplica si toca compilarlos.
+sys-devel/gcc           notmpfs.conf lowjobs.conf
+llvm-core/llvm          notmpfs.conf lowjobs.conf
+llvm-core/clang         notmpfs.conf lowjobs.conf
+dev-lang/rust           notmpfs.conf lowjobs.conf
+dev-qt/qtwebengine      notmpfs.conf lowjobs.conf
+www-client/firefox      notmpfs.conf lowjobs.conf
+www-client/chromium     notmpfs.conf lowjobs.conf
+app-office/libreoffice  notmpfs.conf lowjobs.conf

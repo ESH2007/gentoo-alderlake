@@ -1,0 +1,4 @@
+gui-apps/waybar network pulseaudio tray mpris
+gui-wm/hyprland X
+x11-terms/alacritty wayland -X
+media-fonts/noto cjk -extra

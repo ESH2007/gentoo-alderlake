@@ -1,0 +1,1 @@
+root=PARTUUID=CAMBIA-ESTO rw quiet loglevel=3 rd.udev.log_level=3 nowatchdog nmi_watchdog=0 zswap.enabled=0 i915.enable_fbc=1 i915.enable_psr=1 pcie_aspm.policy=powersupersave

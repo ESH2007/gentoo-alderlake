@@ -1,0 +1,20 @@
+# Hyprland y su ecosistema suelen estar solo en ~amd64.
+# Si emerge pide más, ejecuta:  emerge -av --autounmask=y --autounmask-write=y @esh
+# y revisa los cambios con dispatch-conf.
+gui-wm/hyprland ~amd64
+gui-libs/aquamarine ~amd64
+gui-libs/hyprutils ~amd64
+dev-libs/hyprlang ~amd64
+dev-util/hyprwayland-scanner ~amd64
+gui-libs/hyprcursor ~amd64
+gui-libs/hyprgraphics ~amd64
+gui-apps/hyprlock ~amd64
+gui-apps/hypridle ~amd64
+gui-apps/hyprpolkitagent ~amd64
+gui-libs/hyprland-qtutils ~amd64
+gui-libs/xdg-desktop-portal-hyprland ~amd64
+dev-cpp/sdbus-c++ ~amd64
+
+# Paquetes del overlay propio
+app-misc/esh-desktop ~amd64
+x11-themes/esh-tools **

@@ -1,0 +1,78 @@
+#!/bin/sh
+# esh-menu — menú rápido del sistema con wofi.
+#   esh-menu [temas|energia|sistema|herramientas]
+set -eu
+
+pick() { # pick <título>  (opciones por stdin)
+	wofi --dmenu --insensitive --prompt "$1" --width 420 --height 320 --cache-file /dev/null
+}
+
+term() { setsid -f alacritty --hold -e "$@" >/dev/null 2>&1; }
+
+temas() {
+	actual=$(cat "${XDG_CONFIG_HOME:-$HOME/.config}/esh/current/name" 2>/dev/null || echo)
+	t=$(esh-theme | sed "s/^$actual\$/$actual  (actual)/" | pick "Tema") || exit 0
+	esh-theme "${t%% *}"
+}
+
+energia() {
+	estado=$(cat /sys/firmware/acpi/platform_profile 2>/dev/null || echo "?")
+	o=$(printf '%s\n' \
+		"Automático (según cargador)" \
+		"Rendimiento" \
+		"Ahorro de batería" \
+		"Informe de consumo (powertop)" | pick "Energía · perfil: $estado") || exit 0
+	case "$o" in
+		Auto*)        pkexec tlp start ;;
+		Rend*)        pkexec tlp ac ;;
+		Ahorro*)      pkexec tlp bat ;;
+		Informe*)     term sudo powertop ;;
+	esac
+	notify-send -a esh "Energía" "$o" 2>/dev/null || true
+}
+
+sistema() {
+	o=$(printf '%s\n' "Bloquear" "Suspender" "Cerrar sesión" "Reiniciar" "Apagar" | pick "Sistema") || exit 0
+	case "$o" in
+		Bloquear)    loginctl lock-session ;;
+		Suspender)   systemctl suspend ;;
+		Cerrar*)     hyprctl dispatch exit ;;
+		Reiniciar)   systemctl reboot ;;
+		Apagar)      systemctl poweroff ;;
+	esac
+}
+
+herramientas() {
+	o=$(printf '%s\n' \
+		"Actualizar el sistema" \
+		"Limpiar paquetes huérfanos" \
+		"Wi‑Fi (iwctl)" \
+		"Audio (pulsemixer)" \
+		"Monitor del sistema (btop)" \
+		"Tiempo de arranque" | pick "Herramientas") || exit 0
+	case "$o" in
+		Actualizar*) term sh -c 'sudo emerge --sync && sudo emerge -avuDN @world' ;;
+		Limpiar*)    term sudo emerge -a --depclean ;;
+		Wi*)         term iwctl ;;
+		Audio*)      setsid -f alacritty -e pulsemixer ;;
+		Monitor*)    setsid -f alacritty -e btop ;;
+		Tiempo*)     term sh -c 'systemd-analyze; systemd-analyze blame | head -15' ;;
+	esac
+}
+
+case "${1:-}" in
+	temas)        temas ;;
+	energia)      energia ;;
+	sistema)      sistema ;;
+	herramientas) herramientas ;;
+	*)
+		o=$(printf '%s\n' "Aplicaciones" "Temas" "Energía" "Herramientas" "Atajos de teclado" "Sistema" | pick "ESH") || exit 0
+		case "$o" in
+			Aplic*)  wofi --show drun ;;
+			Temas)   temas ;;
+			Ener*)   energia ;;
+			Herr*)   herramientas ;;
+			Atajos*) esh-keys ;;
+			Sistema) sistema ;;
+		esac ;;
+esac

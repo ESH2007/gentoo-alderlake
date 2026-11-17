@@ -1,0 +1,7 @@
+# /etc/greetd/config.toml — inicio de sesión mínimo en modo texto
+[terminal]
+vt = 1
+
+[default_session]
+command = "tuigreet --time --remember --asterisks --cmd /usr/local/bin/esh-session"
+user = "greetd"
