@@ -6,3 +6,9 @@ gui-libs/wlroots X
 dev-libs/light udev
 x11-terms/alacritty wayland -X
 media-fonts/noto cjk -extra
+
+# Control remoto del servidor (docs/REMOTE.md): Remmina con RDP, VNC y SSH,
+# nativo en Wayland. FreeRDP se queda con sus USE por defecto (llega del binhost).
+net-misc/remmina rdp vnc ssh wayland
+# Solo si activas USE=stream en esh-desktop (Moonlight para un host con Sunshine)
+net-misc/moonlight wayland vaapi

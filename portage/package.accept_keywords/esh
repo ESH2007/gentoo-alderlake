@@ -6,3 +6,6 @@
 # Paquetes del overlay propio
 app-misc/esh-desktop ~amd64
 x11-themes/esh-tools **
+
+# Moonlight (opcional, USE=stream en esh-desktop) solo existe en ~amd64
+net-misc/moonlight ~amd64

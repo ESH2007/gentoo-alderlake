@@ -20,6 +20,7 @@ temas intercambiables.
 | Batería | **TLP** + thermald + EPP + ASPM + PSR | 3–6 W en reposo |
 | Red | **iwd** + systemd-resolved | sin NetworkManager |
 | Escritorio | Sway, Waybar, Wofi, Mako, Alacritty, swaylock/swayidle | estable en `::gentoo`, muy ligero en la iGPU Intel |
+| Remoto | Tailscale + SSH/tmux, **Remmina** (RDP), Moonlight opcional | controlar el servidor CachyOS desde cualquier red |
 | Temas | `brasa`, `glaciar`, `musgo` (originales) | `SUPER+CTRL+T` cambia todo a la vez |
 
 ## Estructura
@@ -34,7 +35,7 @@ overlay/      overlay "esh": app-misc/esh-desktop (metapaquete),
 dotfiles/     configuración de Sway, Waybar, Wofi, Mako, Alacritty,
               plantillas de color y scripts esh-* ; install.sh
 themes/       temas: theme.env + wallpaper.png (generado por make-wallpapers.py)
-docs/         INSTALL, KERNEL, BATTERY, THEMES
+docs/         INSTALL, KERNEL, BATTERY, THEMES, REMOTE
 ```
 
 ## Documentación
@@ -43,6 +44,7 @@ docs/         INSTALL, KERNEL, BATTERY, THEMES
 - [Kernel](docs/KERNEL.md)
 - [Batería y temperatura](docs/BATTERY.md)
 - [Interfaz, temas y atajos](docs/THEMES.md)
+- [Control remoto del servidor CachyOS (SSH y escritorio remoto)](docs/REMOTE.md)
 
 ## Estado
 

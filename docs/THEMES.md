@@ -65,6 +65,7 @@ colores están en `dotfiles/templates/` (`{{ACCENT}}` → `#5cc8ff`,
 | `SUPER+S` | Escritorio temporal (scratchpad) |
 | `SUPER+CTRL+T` | Cambiar tema |
 | `SUPER+CTRL+P` | Modo de energía |
+| `SUPER+CTRL+S` | Servidor remoto: SSH, escritorio remoto, archivos ([REMOTE](REMOTE.md)) |
 | `SUPER+CTRL+B` | Mostrar/ocultar la barra |
 | `SUPER+CTRL+L` | Bloquear pantalla |
 | `SUPER+CTRL+N` | No molestar |
