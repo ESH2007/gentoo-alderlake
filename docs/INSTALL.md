@@ -140,6 +140,7 @@ env-update && source /etc/profile && export PS1="(chroot) $PS1"
 ```sh
 emerge -av sys-kernel/linux-firmware sys-firmware/sof-firmware sys-firmware/intel-microcode
 emerge -av sys-kernel/installkernel sys-kernel/gentoo-sources
+eselect kernel list                          # elige la de gentoo-sources (no la que acaba en -dist)
 eselect kernel set 1
 ```
 

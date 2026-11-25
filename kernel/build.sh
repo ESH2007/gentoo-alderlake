@@ -8,6 +8,15 @@ REPO="${REPO:-/opt/gentoo-alderlake}"
 LSMOD_FILE="${1:-}"
 cd /usr/src/linux
 
+# /usr/src/linux debe apuntar a gentoo-sources, NUNCA al árbol de gentoo-kernel-bin
+# (…-dist): compilarlo da la misma versión y sobrescribe el kernel que funciona.
+case "$(readlink -f /usr/src/linux)" in
+	*dist*)
+		echo "ERROR: /usr/src/linux apunta a $(readlink -f /usr/src/linux)" >&2
+		echo "Elige gentoo-sources con: eselect kernel list && eselect kernel set <n>" >&2
+		exit 1 ;;
+esac
+
 if [ ! -f .config ]; then
 	# Partimos de la configuración del kernel que está corriendo (live USB)
 	if [ -r /proc/config.gz ]; then
