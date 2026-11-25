@@ -227,6 +227,7 @@ Servicios mínimos y dotfiles para tu usuario:
 
 ```sh
 sh $REPO/system/services.sh
+rm -f /etc/greetd/._cfg*                      # conserva nuestra config de greetd
 su - emilio -c "$REPO/dotfiles/install.sh glaciar"
 ```
 
@@ -234,6 +235,8 @@ su - emilio -c "$REPO/dotfiles/install.sh glaciar"
 
 ```sh
 exit                      # sal del chroot
+# DNS de systemd-resolved (dentro del chroot el archivo está ocupado)
+ln -sf ../run/systemd/resolve/stub-resolv.conf /mnt/gentoo/etc/resolv.conf
 umount -R /mnt/gentoo
 reboot
 ```

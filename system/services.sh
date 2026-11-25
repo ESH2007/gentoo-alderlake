@@ -4,7 +4,11 @@ set -eu
 
 # Red: iwd (Wi‑Fi + DHCP) y resolved (DNS). Nada de NetworkManager.
 systemctl enable iwd.service systemd-resolved.service
-ln -sf ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+# Dentro de arch-chroot /etc/resolv.conf está ocupado (lo usa la USB): en ese
+# caso, crea el enlace desde fuera tras `exit`, antes de desmontar:
+#   ln -sf ../run/systemd/resolve/stub-resolv.conf /mnt/gentoo/etc/resolv.conf
+ln -sf ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf 2>/dev/null || \
+	echo "AVISO: no pude enlazar /etc/resolv.conf (normal en chroot). Hazlo tras salir del chroot."
 
 # Energía: TLP (incluye su servicio de suspensión) y thermald (térmica Intel)
 systemctl enable tlp.service thermald.service
