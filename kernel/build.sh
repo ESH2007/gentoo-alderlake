@@ -17,6 +17,12 @@ case "$(readlink -f /usr/src/linux)" in
 		exit 1 ;;
 esac
 
+# El kernel se instala en la partición EFI: tiene que estar montada.
+if ! mountpoint -q /efi; then
+	echo "ERROR: /efi no está montada. Ejecuta: mount /efi  (y revisa /etc/fstab)" >&2
+	exit 1
+fi
+
 if [ ! -f .config ]; then
 	# Partimos de la configuración del kernel que está corriendo (live USB)
 	if [ -r /proc/config.gz ]; then
@@ -33,6 +39,10 @@ if [ ! -f .config ]; then
 fi
 
 scripts/kconfig/merge_config.sh -m .config "$REPO/kernel/alderlake.config"
+
+# Nombre propio (6.x.y-gentoo-esh): nunca coincide ni empieza igual que el del
+# kernel precompilado (…-gentoo-dist), así instalar o borrar uno no toca al otro.
+scripts/config --set-str LOCALVERSION "-esh" --disable LOCALVERSION_AUTO
 
 # Microcódigo Intel dentro del kernel (no usamos initramfs).
 # Alder Lake móvil = familia 6, modelo 0x9a; el archivo depende del stepping.
@@ -57,4 +67,8 @@ make modules_install
 # installkernel[systemd-boot] → kernel-install → /efi/<machine-id>/<versión>/
 make install
 
-echo "Kernel instalado. Comprueba la entrada con: bootctl list"
+rel=$(make -s kernelrelease)
+echo "Kernel $rel instalado."
+echo "Para probarlo SOLO en el próximo arranque (si falla, el siguiente vuelve al de siempre):"
+echo "  bootctl set-oneshot $(cat /etc/machine-id)-$rel.conf"
+echo "Si arranca bien, déjalo como predeterminado con:  bootctl set-default @current"
