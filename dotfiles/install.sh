@@ -14,7 +14,7 @@ BIN="$HOME/.local/bin"
 
 mkdir -p "$CONF" "$DATA" "$BIN"
 
-for app in hypr waybar alacritty wofi; do
+for app in sway waybar alacritty wofi; do
 	for f in "$here/config/$app"/*; do
 		dst="$CONF/$app/$(basename "$f")"
 		mkdir -p "$CONF/$app"
@@ -37,4 +37,4 @@ esac
 
 xdg-user-dirs-update 2>/dev/null || true
 "$BIN/esh-theme" "${1:-glaciar}"
-echo "Listo. Cierra sesión y entra en Hyprland. SUPER+K muestra los atajos."
+echo "Listo. Cierra sesión y entra en Sway. SUPER+K muestra los atajos."

@@ -16,7 +16,7 @@ media-video/pipewire sound-server extra
 media-libs/mesa vaapi vulkan
 media-video/ffmpeg vaapi vulkan
 
-# Portal de capturas/compartir pantalla para Hyprland
+# Portal de capturas/compartir pantalla (xdg-desktop-portal-wlr en Sway)
 sys-apps/xdg-desktop-portal screencast
 
 # Microcódigo: va dentro del kernel (EXTRA_FIRMWARE), sin initramfs

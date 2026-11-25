@@ -13,9 +13,9 @@ unas **7–10 horas** de uso ligero (web, texto).
 | **intel_pstate + EPP** | La CPU elige frecuencia; EPP le dice si priorizar rendimiento o energía | kernel + TLP |
 | **zram** | Swap comprimida en RAM: nada de escrituras de swap al SSD | `system/systemd/zram-generator.conf` |
 | **sysctl** | Escrituras a disco agrupadas cada 15 s, sin NMI watchdog | `system/sysctl.d/90-esh.conf` |
-| **Hyprland** | `vfr`, sin blur ni sombras por defecto, animaciones cortas | `dotfiles/config/hypr/hyprland.conf` |
+| **Sway** | sin blur, sombras ni animaciones: solo redibuja lo que cambia | `dotfiles/config/sway/config` |
 | **VA-API** | Vídeo decodificado por la GPU (YouTube/mpv gastan mucho menos) | `intel-media-driver`, `LIBVA_DRIVER_NAME=iHD` |
-| **hypridle** | Atenúa a 2,5 min, bloquea a 5, apaga pantalla a 5,5, suspende a 15 | `dotfiles/config/hypr/hypridle.conf` |
+| **swayidle** | Atenúa a 2,5 min, bloquea a 5, apaga pantalla a 5,5, suspende a 15 | `dotfiles/config/sway/config` (sección Arranque) |
 
 ## ¿Por qué TLP y no power-profiles-daemon?
 

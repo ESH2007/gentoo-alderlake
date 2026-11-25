@@ -4,9 +4,9 @@ Equipo objetivo: portátil HP con Intel Core i3 de 12.ª generación (Alder Lake
 8 GB de RAM, SSD NVMe de 512 GB, arranque UEFI.
 
 Resultado: Gentoo con systemd, kernel propio sin initramfs arrancado por
-systemd-boot, escritorio Hyprland y la mayoría de paquetes pesados descargados
+systemd-boot, escritorio Sway y la mayoría de paquetes pesados descargados
 ya compilados del binhost oficial. Tiempo aproximado: 2–4 horas (casi todo es
-descarga y la compilación de Hyprland y del kernel).
+descarga y la compilación del kernel).
 
 > Todo lo que va en bloques de código se ejecuta como **root** salvo que se diga
 > lo contrario. Sustituye `nvme0n1` si tu disco tiene otro nombre (`lsblk`).
@@ -176,13 +176,23 @@ cat > /etc/fstab <<'F'
 # <fs>                   <montaje>          <tipo> <opciones>                                       <dump> <pass>
 LABEL=gentoo             /                  ext4   noatime,commit=60                                0 1
 LABEL=EFI                /efi               vfat   umask=0077,noatime                               0 2
-tmpfs                    /var/tmp/portage   tmpfs  size=5G,mode=775,uid=portage,gid=portage,noatime 0 0
+tmpfs                    /var/tmp/portage   tmpfs  size=5G,mode=775,uid=250,gid=250,noatime,nofail 0 0
 tmpfs                    /tmp               tmpfs  size=2G,mode=1777,noatime                        0 0
 F
 ```
 
 `/var/tmp/portage` en RAM acelera la compilación y evita escrituras al SSD.
 Los paquetes enormes compilan en disco (`/etc/portage/package.env/big`).
+
+> **Ojo con la línea de `/var/tmp/portage`.** Usa `uid=250,gid=250` (el número
+> del usuario `portage`) y no `uid=portage`: en el arranque el nombre puede no
+> resolverse y la línea falla. `nofail` hace que, si aun así falla, el sistema
+> arranque igual (Portage compilará en disco) en lugar de caer en *emergency
+> mode*. Si ya estás en emergency mode: escribe la contraseña de root, ejecuta
+> `nano /etc/fstab`, pon `#` delante de esa línea y `reboot`.
+>
+> Para comprobarlo después del primer arranque: `findmnt /var/tmp/portage`
+> debe mostrar `tmpfs`.
 
 ## 10. Usuarios y sudo
 
@@ -204,12 +214,14 @@ rm -rf $REPO && git clone https://github.com/ESH2007/gentoo-alderlake.git $REPO
 ## 11. Escritorio
 
 ```sh
-emerge -av @esh                               # Hyprland, Waybar, Wofi, Mako, Alacritty, TLP…
+emerge -av @esh                               # Sway, Waybar, Wofi, Mako, Alacritty, TLP…
 ```
 
-Si emerge pide palabras clave (`~amd64`) que falten, añádelas a
-`/etc/portage/package.accept_keywords/hyprland` (o usa
-`emerge -av --autounmask-write @esh` y luego `dispatch-conf`).
+Todo el escritorio está en el repositorio oficial `::gentoo` y es estable: **no
+hace falta GURU** ni ningún otro overlay aparte de `esh`. (Hyprland salió de
+`::gentoo` en 2026; por eso este repositorio usa Sway.) Si emerge pide alguna
+palabra clave (`~amd64`), añádela a `/etc/portage/package.accept_keywords/esh`
+(o usa `emerge -av --autounmask-write @esh` y luego `dispatch-conf`).
 
 Servicios mínimos y dotfiles para tu usuario:
 
@@ -226,7 +238,7 @@ umount -R /mnt/gentoo
 reboot
 ```
 
-Inicia sesión en la pantalla de texto (tuigreet) y entrarás en Hyprland.
+Inicia sesión en la pantalla de texto (tuigreet) y entrarás en Sway.
 Conéctate a la Wi‑Fi con `SUPER+ALT+Espacio → Herramientas → Wi‑Fi` o:
 
 ```sh

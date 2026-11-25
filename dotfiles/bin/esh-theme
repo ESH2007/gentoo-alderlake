@@ -41,12 +41,13 @@ grep -E '^[A-Z0-9_]+=' "$tdir/theme.env" | while IFS='=' read -r k v; do
 	raw=$(printf '%s' "$v" | tr -d '#')
 	printf 's|{{%s}}|%s|g\ns|{{%s_RAW}}|%s|g\n' "$k" "$v" "$k" "$raw"
 done > "$sedf"
+printf 's|{{OUT}}|%s|g\n' "$OUT" >> "$sedf"
 
 render() { mkdir -p "$(dirname "$2")"; sed -f "$sedf" "$tpl/$1" > "$2.tmp" && mv "$2.tmp" "$2"; }
 
 mkdir -p "$OUT"
-render hyprland.conf  "$OUT/hyprland.conf"
-render hyprlock.conf  "$OUT/hyprlock.conf"
+render sway.conf      "$OUT/sway.conf"
+render swaylock.conf  "$CONF/swaylock/config"
 render waybar.css     "$OUT/waybar.css"
 render alacritty.toml "$OUT/alacritty.toml"
 render mako.conf      "$CONF/mako/config"
@@ -60,12 +61,11 @@ if command -v gsettings >/dev/null 2>&1; then
 	gsettings set org.gnome.desktop.interface color-scheme "prefer-$mode" 2>/dev/null || true
 fi
 
-# Recarga en caliente (si hay una sesión Hyprland activa)
-if [ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]; then
-	hyprctl reload >/dev/null
+# Recarga en caliente (si hay una sesión Sway activa). `swaymsg reload`
+# vuelve a aplicar colores y fondo (output * bg).
+if [ -n "${SWAYSOCK:-}" ]; then
+	swaymsg reload >/dev/null
 	pkill -SIGUSR2 -x waybar 2>/dev/null || true
 	makoctl reload 2>/dev/null || true
-	pkill -x swaybg 2>/dev/null || true
-	setsid -f swaybg -i "$OUT/wallpaper" -m fill >/dev/null 2>&1
 	notify-send -a esh "Tema: $(sed -n 's/^NAME=//p' "$tdir/theme.env")" 2>/dev/null || true
 fi

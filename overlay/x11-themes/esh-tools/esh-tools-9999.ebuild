@@ -5,7 +5,7 @@ EAPI=8
 
 inherit git-r3
 
-DESCRIPTION="Temas y scripts esh-* (menú, temas, energía, capturas) para Hyprland"
+DESCRIPTION="Temas y scripts esh-* (menú, temas, energía, capturas) para Sway"
 HOMEPAGE="https://github.com/ESH2007/gentoo-alderlake"
 EGIT_REPO_URI="https://github.com/ESH2007/gentoo-alderlake.git"
 
@@ -18,6 +18,7 @@ RDEPEND="
 	gui-apps/wofi
 	gui-apps/mako
 	gui-apps/swaybg
+	x11-libs/libnotify
 "
 
 src_compile() { :; }

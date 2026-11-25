@@ -1,17 +1,19 @@
-# Interfaz: Hyprland + temas ESH
+# Interfaz: Sway + temas ESH
 
 Un escritorio de mosaico con teclado primero, inspirado en la experiencia de
-Omarchy (Hyprland, Waybar, lanzador, notificaciones, temas que cambian todo a la
+Omarchy (compositor de mosaico, Waybar, lanzador, notificaciones, temas que cambian todo a la
 vez), pero con configuración, temas, fondos y scripts **propios**.
 
 | Pieza | Programa |
 |-------|----------|
-| Compositor | Hyprland |
+| Compositor | Sway |
 | Barra | Waybar |
 | Lanzador y menús | Wofi |
 | Notificaciones | Mako |
 | Terminal | Alacritty |
-| Bloqueo / inactividad | hyprlock / hypridle |
+| Bloqueo / inactividad | swaylock / swayidle |
+| Contraseñas (polkit) | polkit-gnome |
+| Portales (capturas, compartir pantalla) | xdg-desktop-portal-wlr + gtk |
 | Fondo | swaybg |
 | Capturas | grim + slurp + wl-clipboard |
 
@@ -24,7 +26,7 @@ vez), pero con configuración, temas, fondos y scripts **propios**.
 | `musgo` | claro tipo papel, acento verde |
 
 Cambiar: `SUPER+CTRL+T` o `esh-theme <nombre>`. Se recargan al momento
-Hyprland, Waybar, Mako, Wofi, Alacritty, hyprlock y el fondo.
+Sway (bordes y fondo), Waybar, Mako, Wofi, Alacritty y swaylock.
 
 ### Crear tu propio tema
 
@@ -50,7 +52,9 @@ colores están en `dotfiles/templates/` (`{{ACCENT}}` → `#5cc8ff`,
 | `SUPER+Escape` | Bloquear / suspender / reiniciar / apagar |
 | `SUPER+B` / `SUPER+N` | Navegador / Neovim |
 | `SUPER+W` | Cerrar ventana |
-| `SUPER+F` / `SUPER+M` | Pantalla completa / maximizar |
+| `SUPER+F` | Pantalla completa |
+| `SUPER+M` | Ventanas en pestañas / mosaico |
+| `SUPER+R` | Modo redimensionar (flechas, `Esc` para salir) |
 | `SUPER+T` | Ventana flotante |
 | `SUPER+J` | Cambiar dirección de la división |
 | `SUPER+flechas` | Mover el foco |
@@ -61,10 +65,13 @@ colores están en `dotfiles/templates/` (`{{ACCENT}}` → `#5cc8ff`,
 | `SUPER+S` | Escritorio temporal (scratchpad) |
 | `SUPER+CTRL+T` | Cambiar tema |
 | `SUPER+CTRL+P` | Modo de energía |
-| `SUPER+CTRL+B` | Activar/desactivar blur y sombras |
+| `SUPER+CTRL+B` | Mostrar/ocultar la barra |
 | `SUPER+CTRL+L` | Bloquear pantalla |
 | `SUPER+CTRL+N` | No molestar |
 | `Impr` / `SHIFT+Impr` / `SUPER+Impr` | Captura de zona / pantalla / ventana |
+| `SUPER+SHIFT+R` | Recargar la configuración de Sway |
 | 3 dedos en el touchpad | Cambiar de escritorio |
 
-Tus ajustes personales van en `~/.config/hypr/local.conf` (no se sobrescribe).
+Tus ajustes personales van en `~/.config/sway/local.conf` (no se sobrescribe).
+Para que un atajo tuyo salga en `SUPER+K`, pon una línea `## Descripción` justo
+encima de su `bindsym`.

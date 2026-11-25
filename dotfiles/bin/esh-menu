@@ -7,7 +7,7 @@ pick() { # pick <título>  (opciones por stdin)
 	wofi --dmenu --insensitive --prompt "$1" --width 420 --height 320 --cache-file /dev/null
 }
 
-term() { setsid -f alacritty --hold -e "$@" >/dev/null 2>&1; }
+term() { setsid -f alacritty --class esh-float --hold -e "$@" >/dev/null 2>&1; }
 
 temas() {
 	actual=$(cat "${XDG_CONFIG_HOME:-$HOME/.config}/esh/current/name" 2>/dev/null || echo)
@@ -36,7 +36,7 @@ sistema() {
 	case "$o" in
 		Bloquear)    loginctl lock-session ;;
 		Suspender)   systemctl suspend ;;
-		Cerrar*)     hyprctl dispatch exit ;;
+		Cerrar*)     swaymsg exit ;;
 		Reiniciar)   systemctl reboot ;;
 		Apagar)      systemctl poweroff ;;
 	esac
@@ -54,8 +54,8 @@ herramientas() {
 		Actualizar*) term sh -c 'sudo emerge --sync && sudo emerge -avuDN @world' ;;
 		Limpiar*)    term sudo emerge -a --depclean ;;
 		Wi*)         term iwctl ;;
-		Audio*)      setsid -f alacritty -e pulsemixer ;;
-		Monitor*)    setsid -f alacritty -e btop ;;
+		Audio*)      setsid -f alacritty --class esh-float -e pulsemixer ;;
+		Monitor*)    setsid -f alacritty --class esh-float -e btop ;;
 		Tiempo*)     term sh -c 'systemd-analyze; systemd-analyze blame | head -15' ;;
 	esac
 }

@@ -1,15 +1,21 @@
 #!/bin/sh
-# esh-keys — muestra los atajos (los `bindd` de hyprland.conf) en una lista buscable.
-hyprctl binds -j | jq -r '
-	def mods: [
-		(if . % 2 >= 1 then "SHIFT" else empty end),
-		(if (. / 4 | floor) % 2 == 1 then "CTRL" else empty end),
-		(if (. / 8 | floor) % 2 == 1 then "ALT" else empty end),
-		(if (. / 64 | floor) % 2 == 1 then "SUPER" else empty end)
-	] | reverse | join(" + ");
-	.[] | select(.has_description) |
-	((.modmask | mods) as $m |
-	 (if $m == "" then .key else "\($m) + \(.key)" end) | ascii_upcase) as $k |
-	"\($k)\t\(.description)"' |
-	awk -F'\t' '{ printf "%-28s %s\n", $1, $2 }' |
+# esh-keys — muestra los atajos de Sway en una lista buscable.
+# Lee las líneas "## Descripción" que van encima de cada bindsym/bindgesture
+# en ~/.config/sway/config y local.conf.
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}/sway"
+cat "$CONF/config" "$CONF/local.conf" 2>/dev/null | awk '
+	/^[[:space:]]*## / { d = $0; sub(/^[[:space:]]*## /, "", d); next }
+	/^[[:space:]]*bind(sym|gesture)/ && d != "" {
+		k = ""
+		for (i = 2; i <= NF; i++) if ($i !~ /^--/) { k = $i; break }
+		gsub(/\$mod/, "SUPER", k); gsub(/Mod1/, "ALT", k); gsub(/Mod4/, "SUPER", k)
+		gsub(/\+/, " + ", k)
+		k = toupper(k)
+		if (k ~ /^SUPER \+ 1$/) k = "SUPER + 1…9"
+		if (k ~ /^SUPER \+ SHIFT \+ 1$/) k = "SUPER + SHIFT + 1…9"
+		if (k ~ /^SWIPE:3:/) k = "3 DEDOS ← →"
+		printf "%-28s %s\n", k, d
+		d = ""; next
+	}
+	{ d = "" }' |
 	wofi --dmenu --insensitive --prompt "Atajos" --width 640 --height 520 --cache-file /dev/null >/dev/null

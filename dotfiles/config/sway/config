@@ -1,0 +1,220 @@
+# ~/.config/sway/config — escritorio ESH (Sway)
+# Colores: ~/.config/esh/current/sway.conf (lo genera `esh-theme`)
+# Ver todos los atajos: SUPER + K
+#
+# Formato: una línea "## Descripción" justo encima de un atajo hace que
+# aparezca en la lista de SUPER+K (esh-keys).
+
+# --- Programas -----------------------------------------------------------------
+set $mod Mod4
+set $term alacritty
+set $float alacritty --class esh-float
+set $launcher wofi --show drun
+set $browser firefox-bin
+set $editor alacritty -e nvim
+
+# --- Pantalla ------------------------------------------------------------------
+# Panel interno a su resolución nativa, escala 1.
+# Si es 1080p de 14", prueba en local.conf:  output eDP-1 scale 1.25
+output * bg ~/.config/esh/current/wallpaper fill
+
+# --- Aspecto (ligero: Sway no tiene blur ni animaciones, gasta muy poco) --------
+font pango:JetBrains Mono 10
+default_border pixel 2
+default_floating_border pixel 2
+titlebar_border_thickness 1
+titlebar_padding 8 4
+gaps inner 6
+gaps outer 2
+smart_gaps off
+focus_follows_mouse yes
+focus_on_window_activation focus
+seat seat0 xcursor_theme Adwaita 24
+
+# Colores del tema actual
+include ~/.config/esh/current/sway.conf
+
+# --- Entrada -------------------------------------------------------------------
+input type:keyboard {
+    xkb_layout es
+    # Latinoamericano:  xkb_layout latam
+    repeat_delay 300
+    repeat_rate 40
+}
+
+input type:touchpad {
+    tap enabled
+    natural_scroll enabled
+    dwt enabled
+    click_method clickfinger
+    scroll_method two_finger
+    middle_emulation enabled
+}
+
+# --- Reglas de ventanas --------------------------------------------------------
+# Herramientas (btop, pulsemixer, iwctl…) se abren flotando y centradas
+for_window [app_id="esh-float"] floating enable, resize set 960 600, move position center
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="dialog"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [app_id="firefox" title="^Picture-in-Picture$"] floating enable, sticky enable
+for_window [app_id="org.gnome.*" title="(Abrir|Guardar|Open|Save).*"] floating enable
+# No suspender ni bloquear mientras haya algo a pantalla completa (vídeos)
+for_window [shell="xdg_shell"] inhibit_idle fullscreen
+for_window [shell="xwayland"] inhibit_idle fullscreen
+
+# --- Atajos --------------------------------------------------------------------
+floating_modifier $mod normal
+
+## Terminal
+bindsym $mod+Return exec $term
+## Lanzador de aplicaciones
+bindsym $mod+space exec $launcher
+## Menú ESH (temas, energía, herramientas, sistema)
+bindsym $mod+Mod1+space exec esh-menu
+## Menú de apagado
+bindsym $mod+Escape exec esh-menu sistema
+## Navegador
+bindsym $mod+b exec $browser
+## Editor (Neovim)
+bindsym $mod+n exec $editor
+## Ver atajos de teclado
+bindsym $mod+k exec esh-keys
+## Cambiar tema
+bindsym $mod+Ctrl+t exec esh-menu temas
+## Modo de energía
+bindsym $mod+Ctrl+p exec esh-menu energia
+## Mostrar/ocultar la barra
+bindsym $mod+Ctrl+b exec pkill -SIGUSR1 -x waybar
+## Bloquear pantalla
+bindsym $mod+Ctrl+l exec loginctl lock-session
+## No molestar
+bindsym $mod+Ctrl+n exec makoctl mode -t do-not-disturb
+## Recargar la configuración de Sway
+bindsym $mod+Shift+r reload
+
+## Cerrar ventana
+bindsym $mod+w kill
+## Pantalla completa
+bindsym $mod+f fullscreen toggle
+## Pestañas / mosaico
+bindsym $mod+m layout toggle tabbed split
+## Ventana flotante
+bindsym $mod+t floating toggle
+## Cambiar foco entre flotantes y mosaico
+bindsym $mod+Shift+t focus mode_toggle
+## Cambiar dirección de la división
+bindsym $mod+j layout toggle split
+## Modo redimensionar (flechas, Esc para salir)
+bindsym $mod+r mode "redimensionar"
+
+## Foco a la izquierda
+bindsym $mod+Left focus left
+## Foco a la derecha
+bindsym $mod+Right focus right
+## Foco arriba
+bindsym $mod+Up focus up
+## Foco abajo
+bindsym $mod+Down focus down
+## Mover ventana a la izquierda
+bindsym $mod+Shift+Left move left
+## Mover ventana a la derecha
+bindsym $mod+Shift+Right move right
+## Mover ventana arriba
+bindsym $mod+Shift+Up move up
+## Mover ventana abajo
+bindsym $mod+Shift+Down move down
+## Reducir ventana
+bindsym $mod+minus resize shrink width 80px
+## Ampliar ventana
+bindsym $mod+plus resize grow width 80px
+
+## Escritorio siguiente
+bindsym $mod+Tab workspace next_on_output
+## Escritorio anterior
+bindsym $mod+Shift+Tab workspace prev_on_output
+## Escritorio temporal (scratchpad)
+bindsym $mod+s scratchpad show
+## Enviar al escritorio temporal
+bindsym $mod+Shift+s move scratchpad
+
+## Ir al escritorio 1…9
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+## Enviar ventana al escritorio 1…9
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+
+## Captura de una zona
+bindsym Print exec esh-screenshot zona
+## Captura de pantalla completa
+bindsym Shift+Print exec esh-screenshot pantalla
+## Captura de la ventana activa
+bindsym $mod+Print exec esh-screenshot ventana
+
+# Teclas multimedia (funcionan también con la pantalla bloqueada)
+## Subir volumen
+bindsym --locked XF86AudioRaiseVolume exec wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+
+## Bajar volumen
+bindsym --locked XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+## Silenciar
+bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+## Silenciar micrófono
+bindsym --locked XF86AudioMicMute exec wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+## Subir brillo
+bindsym --locked XF86MonBrightnessUp exec light -A 5
+## Bajar brillo
+bindsym --locked XF86MonBrightnessDown exec light -U 5
+## Reproducir/pausa
+bindsym --locked XF86AudioPlay exec playerctl play-pause
+## Siguiente pista
+bindsym --locked XF86AudioNext exec playerctl next
+## Pista anterior
+bindsym --locked XF86AudioPrev exec playerctl previous
+
+## Cambiar de escritorio (3 dedos en el touchpad)
+bindgesture swipe:3:right workspace prev_on_output
+bindgesture swipe:3:left workspace next_on_output
+
+mode "redimensionar" {
+    bindsym Left resize shrink width 40px
+    bindsym Right resize grow width 40px
+    bindsym Up resize shrink height 40px
+    bindsym Down resize grow height 40px
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# --- Arranque ------------------------------------------------------------------
+# Pasa las variables de la sesión a systemd/dbus (portales, PipeWire, polkit…)
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP
+exec waybar
+exec mako
+exec /usr/libexec/polkit-gnome-authentication-agent-1
+
+# Inactividad: atenuar a 2,5 min, bloquear a 5, apagar pantalla a 5,5, suspender a 15
+exec swayidle -w \
+    timeout 150 'light -O && light -S 15' resume 'light -I' \
+    timeout 300 'loginctl lock-session' \
+    timeout 330 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+    timeout 900 'systemctl suspend' \
+    before-sleep 'swaylock' \
+    after-resume 'swaymsg "output * power on"' \
+    lock 'swaylock'
+
+# Ajustes personales sin tocar este archivo
+include ~/.config/sway/local.conf
