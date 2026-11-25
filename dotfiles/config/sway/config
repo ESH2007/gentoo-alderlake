@@ -84,6 +84,8 @@ bindsym $mod+k exec esh-keys
 bindsym $mod+Ctrl+t exec esh-menu temas
 ## Modo de energía
 bindsym $mod+Ctrl+p exec esh-menu energia
+## Servidor remoto (SSH, escritorio remoto)
+bindsym $mod+Ctrl+s exec esh-menu servidor
 ## Mostrar/ocultar la barra
 bindsym $mod+Ctrl+b exec pkill -SIGUSR1 -x waybar
 ## Bloquear pantalla

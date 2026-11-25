@@ -1,6 +1,6 @@
 #!/bin/sh
 # esh-menu — menú rápido del sistema con wofi.
-#   esh-menu [temas|energia|sistema|herramientas]
+#   esh-menu [temas|energia|sistema|herramientas|servidor]
 set -eu
 
 pick() { # pick <título>  (opciones por stdin)
@@ -60,18 +60,49 @@ herramientas() {
 	esac
 }
 
+# Servidor de compilación (CachyOS). El alias "build" vive en ~/.ssh/config
+# (ver docs/REMOTE.md). Cambia ESH_SERVER si lo llamas de otra forma.
+servidor() {
+	srv="${ESH_SERVER:-build}"
+	o=$(printf '%s\n' \
+		"Terminal en el servidor (tmux)" \
+		"Escritorio remoto (Remmina)" \
+		"Streaming fluido (Moonlight)" \
+		"Montar carpetas del servidor (~/servidor)" \
+		"Estado de Tailscale" | pick "Servidor · $srv") || exit 0
+	case "$o" in
+		# tmux new -A: se reengancha a la sesión "main" si ya existe, así una
+		# compilación larga sigue viva aunque se corte el Wi‑Fi.
+		Terminal*)   setsid -f alacritty --title "$srv" -e ssh -t "$srv" 'tmux new -A -s main' >/dev/null 2>&1 ;;
+		Escritorio*) setsid -f remmina >/dev/null 2>&1 ;;
+		Streaming*)  command -v moonlight >/dev/null && setsid -f moonlight >/dev/null 2>&1 \
+		                 || notify-send -a esh "Moonlight no instalado" "Activa USE=stream en app-misc/esh-desktop" ;;
+		Montar*)     mkdir -p "$HOME/servidor"
+		             if mountpoint -q "$HOME/servidor"; then
+		                 fusermount3 -u "$HOME/servidor" && notify-send -a esh "Servidor" "Desmontado ~/servidor"
+		             else
+		                 sshfs "$srv:" "$HOME/servidor" -o reconnect,ServerAliveInterval=15 \
+		                     && notify-send -a esh "Servidor" "Montado en ~/servidor" \
+		                     || notify-send -a esh "Servidor" "No pude montar (¿ssh $srv funciona?)"
+		             fi ;;
+		Estado*)     term tailscale status ;;
+	esac
+}
+
 case "${1:-}" in
+	servidor)     servidor ;;
 	temas)        temas ;;
 	energia)      energia ;;
 	sistema)      sistema ;;
 	herramientas) herramientas ;;
 	*)
-		o=$(printf '%s\n' "Aplicaciones" "Temas" "Energía" "Herramientas" "Atajos de teclado" "Sistema" | pick "ESH") || exit 0
+		o=$(printf '%s\n' "Aplicaciones" "Temas" "Energía" "Herramientas" "Servidor" "Atajos de teclado" "Sistema" | pick "ESH") || exit 0
 		case "$o" in
 			Aplic*)  wofi --show drun ;;
 			Temas)   temas ;;
 			Ener*)   energia ;;
 			Herr*)   herramientas ;;
+			Serv*)   servidor ;;
 			Atajos*) esh-keys ;;
 			Sistema) sistema ;;
 		esac ;;

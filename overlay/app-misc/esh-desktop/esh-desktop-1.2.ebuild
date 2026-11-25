@@ -10,7 +10,7 @@ S="${WORKDIR}"
 LICENSE="metapackage"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="+browser +fonts"
+IUSE="+browser +fonts +remote stream"
 
 RDEPEND="
 	gui-wm/sway
@@ -60,6 +60,14 @@ RDEPEND="
 	sys-process/btop
 
 	browser? ( www-client/firefox-bin )
+	remote? (
+		net-misc/openssh
+		net-misc/mosh
+		app-misc/tmux
+		net-fs/sshfs
+		net-misc/remmina
+	)
+	stream? ( net-misc/moonlight )
 	fonts? (
 		media-fonts/jetbrains-mono
 		media-fonts/noto
