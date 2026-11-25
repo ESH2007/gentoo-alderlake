@@ -11,5 +11,7 @@ for d in package.use package.accept_keywords package.env env binrepos.conf repos
 	mkdir -p "$E/$d"
 	cp -v "$P/$d/"* "$E/$d/"
 done
+# Restos de la versión con Hyprland (Hyprland ya no está en ::gentoo)
+rm -f "$E/package.accept_keywords/hyprland"
 mkdir -p /var/tmp/notmpfs
 echo "Listo. Ahora: getuto && emerge --sync"

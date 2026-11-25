@@ -3,7 +3,7 @@
 
 EAPI=8
 
-DESCRIPTION="Metapaquete: escritorio Hyprland ligero para portátiles Intel Alder Lake"
+DESCRIPTION="Metapaquete: escritorio Sway ligero para portátiles Intel Alder Lake"
 HOMEPAGE="https://github.com/ESH2007/gentoo-alderlake"
 S="${WORKDIR}"
 
@@ -13,11 +13,12 @@ KEYWORDS="~amd64"
 IUSE="+browser +fonts"
 
 RDEPEND="
-	gui-wm/hyprland
-	gui-apps/hypridle
-	gui-apps/hyprlock
-	gui-apps/hyprpolkitagent
-	gui-libs/xdg-desktop-portal-hyprland
+	gui-wm/sway
+	gui-apps/swayidle
+	gui-apps/swaylock
+	gnome-extra/polkit-gnome
+	gui-libs/xdg-desktop-portal-wlr
+	sys-apps/xdg-desktop-portal-gtk
 	gui-apps/waybar
 	gui-apps/wofi
 	gui-apps/mako
@@ -28,7 +29,8 @@ RDEPEND="
 	gui-apps/tuigreet
 	gui-libs/greetd
 	x11-terms/alacritty
-	app-misc/brightnessctl
+	dev-libs/light
+	x11-libs/libnotify
 	media-sound/playerctl
 	media-sound/pulsemixer
 
@@ -44,7 +46,7 @@ RDEPEND="
 	sys-power/tlp
 	sys-power/thermald
 	sys-power/powertop
-	sys-block/zram-generator
+	sys-apps/zram-generator
 	sys-apps/xdg-desktop-portal
 	x11-misc/xdg-user-dirs
 	x11-themes/adwaita-icon-theme

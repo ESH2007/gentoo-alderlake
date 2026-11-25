@@ -2,7 +2,7 @@
 
 Configuración de una instalación **Gentoo** rápida y de bajo consumo para un
 portátil HP con **Intel Core i3 de 12.ª generación (Alder Lake)**, **8 GB de RAM**
-y **SSD NVMe de 512 GB**, con un escritorio **Hyprland** de teclado primero y
+y **SSD NVMe de 512 GB**, con un escritorio **Sway** de teclado primero y
 temas intercambiables.
 
 > Empieza por la **[guía de instalación](docs/INSTALL.md)**.
@@ -19,7 +19,7 @@ temas intercambiables.
 | Memoria | **zram** zstd (4 GB), `swappiness=180` | sin swap en el SSD |
 | Batería | **TLP** + thermald + EPP + ASPM + PSR | 3–6 W en reposo |
 | Red | **iwd** + systemd-resolved | sin NetworkManager |
-| Escritorio | Hyprland, Waybar, Wofi, Mako, Alacritty, hyprlock/hypridle | ligero y fluido en la iGPU Intel |
+| Escritorio | Sway, Waybar, Wofi, Mako, Alacritty, swaylock/swayidle | estable en `::gentoo`, muy ligero en la iGPU Intel |
 | Temas | `brasa`, `glaciar`, `musgo` (originales) | `SUPER+CTRL+T` cambia todo a la vez |
 
 ## Estructura
@@ -31,7 +31,7 @@ kernel/       fragmento de configuración + build.sh
 system/       sysctl, zram, TLP, iwd, greetd, cmdline del kernel, servicios
 overlay/      overlay "esh": app-misc/esh-desktop (metapaquete),
               x11-themes/esh-tools (scripts y temas)
-dotfiles/     configuración de Hyprland, Waybar, Wofi, Mako, Alacritty,
+dotfiles/     configuración de Sway, Waybar, Wofi, Mako, Alacritty,
               plantillas de color y scripts esh-* ; install.sh
 themes/       temas: theme.env + wallpaper.png (generado por make-wallpapers.py)
 docs/         INSTALL, KERNEL, BATTERY, THEMES
@@ -48,7 +48,7 @@ docs/         INSTALL, KERNEL, BATTERY, THEMES
 
 Configuración escrita a partir de la documentación de Gentoo y de cada
 programa, **todavía sin probar en el equipo real**. Los nombres de paquetes y la
-sintaxis de Hyprland cambian a menudo: si `emerge` o Hyprland se quejan de algo,
+sintaxis de los programas cambian a veces: si `emerge` o Sway se quejan de algo,
 abre un issue con el mensaje exacto.
 
 Licencia: MIT (ebuilds: GPL-2).

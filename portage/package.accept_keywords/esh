@@ -1,0 +1,8 @@
+# Sway y su ecosistema son estables en amd64: no hace falta ~amd64.
+# Si emerge pide alguna palabra clave más, ejecuta:
+#   emerge -av --autounmask=y --autounmask-write=y @esh
+# y revisa los cambios con dispatch-conf.
+
+# Paquetes del overlay propio
+app-misc/esh-desktop ~amd64
+x11-themes/esh-tools **

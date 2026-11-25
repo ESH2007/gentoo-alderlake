@@ -4,7 +4,7 @@
   "position": "top",
   "height": 28,
   "spacing": 6,
-  "modules-left": ["custom/esh", "hyprland/workspaces", "hyprland/window"],
+  "modules-left": ["custom/esh", "sway/workspaces", "sway/mode", "sway/window"],
   "modules-center": ["clock"],
   "modules-right": ["tray", "cpu", "memory", "backlight", "pulseaudio", "network", "battery", "custom/power"],
 
@@ -13,32 +13,32 @@
     "tooltip-format": "Menú ESH (SUPER+ALT+Espacio)",
     "on-click": "esh-menu"
   },
-  "hyprland/workspaces": {
-    "format": "{id}",
-    "on-scroll-up": "hyprctl dispatch workspace e-1",
-    "on-scroll-down": "hyprctl dispatch workspace e+1",
-    "persistent-workspaces": { "*": 5 }
+  "sway/workspaces": {
+    "format": "{name}",
+    "disable-scroll": false,
+    "persistent-workspaces": { "1": [], "2": [], "3": [], "4": [], "5": [] }
   },
-  "hyprland/window": { "max-length": 50, "separate-outputs": true },
+  "sway/mode": { "format": "\uf0b2 {}" },
+  "sway/window": { "max-length": 50 },
   "clock": {
     "format": "{:%a %d %b  %H:%M}",
     "locale": "es_ES.UTF-8",
     "tooltip-format": "<tt>{calendar}</tt>"
   },
   "tray": { "spacing": 8, "icon-size": 14 },
-  "cpu": { "interval": 5, "format": "\uf2db {usage}%", "on-click": "alacritty -e btop" },
+  "cpu": { "interval": 5, "format": "\uf2db {usage}%", "on-click": "alacritty --class esh-float -e btop" },
   "memory": { "interval": 10, "format": "\uf538 {percentage}%", "tooltip-format": "RAM {used:0.1f}/{total:0.1f} GiB · swap zram {swapUsed:0.1f} GiB" },
   "backlight": {
     "format": "{icon} {percent}%",
     "format-icons": ["\uf185", "\uf185"],
-    "on-scroll-up": "brightnessctl -e4 -n2 set 5%+",
-    "on-scroll-down": "brightnessctl -e4 -n2 set 5%-"
+    "on-scroll-up": "light -A 5",
+    "on-scroll-down": "light -U 5"
   },
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-muted": "\uf6a9 --",
     "format-icons": { "default": ["\uf026", "\uf027", "\uf028"] },
-    "on-click": "alacritty -e pulsemixer",
+    "on-click": "alacritty --class esh-float -e pulsemixer",
     "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
   },
   "network": {
@@ -46,7 +46,7 @@
     "format-ethernet": "\uf6ff",
     "format-disconnected": "\uf127 --",
     "tooltip-format-wifi": "{essid} · {ipaddr}",
-    "on-click": "alacritty -e iwctl"
+    "on-click": "alacritty --class esh-float -e iwctl"
   },
   "battery": {
     "interval": 30,

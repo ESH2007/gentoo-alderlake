@@ -1,4 +1,8 @@
-gui-apps/waybar network pulseaudio tray mpris
-gui-wm/hyprland X
+gui-apps/waybar network pulseaudio tray mpris backlight
+# X = XWayland (programas antiguos de X11 dentro de Sway)
+gui-wm/sway X
+gui-libs/wlroots X
+# light: permite cambiar el brillo a los usuarios del grupo video
+dev-libs/light udev
 x11-terms/alacritty wayland -X
 media-fonts/noto cjk -extra
